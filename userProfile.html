@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Profiles</title>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script src="https://unpkg.com/react@18.2.0/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <script type="text/babel">
+      let root = document.getElementById("root");
+      
+    const { useState } = React;
+
+    const UserProfile = ({ user }) => (
+      <div style={{ border: '1px solid #ccc', padding: '10px', margin: '10px', borderRadius: '5px' }}>
+        <h2>{user.name}</h2>
+        <p>Email: {user.email}</p>
+        <p>Phone: {user.phone}</p>
+      </div>
+    );
+
+    const App = () => {
+      const users = [
+        { id: 1, name: 'John Doe', email: 'john@example.com', phone: '123-456-7890' },
+        { id: 2, name: 'Jane Smith', email: 'jane@example.com', phone: '987-654-3210' },
+        { id: 3, name: 'Alice Johnson', email: 'alice@example.com', phone: '555-123-4567' },
+        { id: 4, name: 'Bob Brown', email: 'bob@example.com', phone: '444-555-6666' }
+      ];
+
+      const [searchQuery, setSearchQuery] = useState('');
+      const [filteredUsers, setFilteredUsers] = useState(users);
+
+      const handleSearch = (e) => {
+        const query = e.target.value.toLowerCase();
+        setSearchQuery(query);
+        const filtered = users.filter(user => user.name.toLowerCase().includes(query));
+        setFilteredUsers(filtered);
+      };
+
+      return (
+        <div>
+          <h1>User Profiles</h1>
+          <input type="text" placeholder="Search by name..." value={searchQuery} onChange={handleSearch} />
+          <div>
+            {filteredUsers.map(user => (
+              <UserProfile key={user.id} user={user} />
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    ReactDOM.createRoot(root).render(<App />);
+  </script>
+</body>
+</html>
